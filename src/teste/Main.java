@@ -1,18 +1,17 @@
 package teste;
 
 import dominio.Camisa;
-import dominio.Loja;
-import servico.Servicos;
+import servico.ServicosLoja;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args) {
-        Camisa camisa = new Camisa("esportivo", "Azul", 38, 89, false, true);
+        ServicosLoja.addRoupa(new Camisa("Listrada", "Azul e verde", 'M', 50, false, true));
+        ServicosLoja.addRoupa(new Camisa("Listrada", "Azul e verde", 'M', 50, false, true));
+        ServicosLoja.print();
 
-        Loja loja = new Loja();
-        loja.addCamisa(camisa);
-
-        Servicos.divulgarRoupa(loja, "esportivo", 38);
+        ServicosLoja.vender("Listrada", 1);
+        ServicosLoja.print();
     }
 }

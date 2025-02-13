@@ -1,16 +1,22 @@
 package dominio;
 
 public abstract class Roupa {
-    protected String modelo;
+    protected String nome;
     protected String cor;
-    protected int tamanho;
     protected double valor;
 
-    public Roupa(String modelo, String cor, int tamanho, double valor) {
-        this.modelo = modelo;
+    public Roupa(String nome, String cor, double valor) {
+        this.nome = nome;
         this.cor = cor;
-        this.tamanho = tamanho;
         this.valor = valor;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
     public String getCor() {
@@ -19,22 +25,6 @@ public abstract class Roupa {
 
     public void setCor(String cor) {
         this.cor = cor;
-    }
-
-    public String getModelo() {
-        return modelo;
-    }
-
-    public void setModelo(String modelo) {
-        this.modelo = modelo;
-    }
-
-    public int getTamanho() {
-        return tamanho;
-    }
-
-    public void setTamanho(int tamanho) {
-        this.tamanho = tamanho;
     }
 
     public double getValor() {
