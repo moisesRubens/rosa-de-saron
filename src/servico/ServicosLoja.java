@@ -4,6 +4,8 @@ import dominio.Calca;
 import dominio.Camisa;
 import dominio.Roupa;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -14,7 +16,7 @@ public class ServicosLoja {
         estoque.add(roupa);
     }
 
-    public static void vender(String nomeProduto, int quantidade) {
+    public static void venderRoupa(String nomeProduto, int quantidade) {
         Iterator<Roupa> iterator = estoque.iterator();
         int quant = 0;
 
@@ -24,25 +26,32 @@ public class ServicosLoja {
                 iterator.remove();
                 quant++;
             }
-            if(quantidade == quant) {
-                break;
-            }
+            if(quantidade == quant) { break; }
         }
     }
 
     public static void print() {
-        if(estoque.size() == 0) {
+        if (estoque.isEmpty()) {
             System.out.println("NAO HA ROUPAS");
         }
-        for(Roupa roupa: estoque) {
-            if(roupa instanceof Camisa) {
-                System.out.println("CAMISA: "+((Camisa)roupa).getNome());
-                System.out.println("TAMANHO: "+((Camisa)roupa).getTamanho());
-                System.out.println("PRECO: "+((Camisa)roupa).getValor());
+
+        for (Roupa roupa : estoque) {
+            if (roupa instanceof Camisa camisa) {
+                System.out.println("CAMISA: " + camisa.getNome());
+                System.out.println("TAMANHO: " + camisa.getTamanho());
+                System.out.println("PRECO: " + camisa.getValor());
             } else {
-                System.out.println((Calca)roupa);
+                Calca calca = (Calca) roupa;
+                System.out.println("CALCA: " + calca.getNome());
+                System.out.println("TAMANHO: " + calca.getTamanho());
+                System.out.println("PRECO: " + calca.getValor());
             }
             System.out.println();
         }
+    }
+
+    public static void gerarBoleto() throws IOException{
+        File file = new File("boleto-compras\\compra.txt");
+        System.out.println("FILE CREATED: "+file.createNewFile());
     }
 }

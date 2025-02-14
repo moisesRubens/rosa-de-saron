@@ -2,9 +2,9 @@ package dominio;
 
 public class Calca extends Roupa {
     protected String peCalca;
-    protected char tamanho;
+    protected int tamanho;
 
-    public Calca(String nome, String cor, char tamanho, double valor, String peCalca) {
+    public Calca(String nome, String cor, int tamanho, double valor, String peCalca) {
         super(nome, cor, valor);
         this.peCalca = peCalca;
         this.tamanho = tamanho;
@@ -21,11 +21,11 @@ public class Calca extends Roupa {
                 '}';
     }
 
-    public char getTamanho() {
+    public int getTamanho() {
         return tamanho;
     }
 
-    public void setTamanho(char tamanho) {
+    public void setTamanho(int tamanho) {
         this.tamanho = tamanho;
     }
 
