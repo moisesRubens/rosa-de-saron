@@ -10,8 +10,13 @@ import java.io.IOException;
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args) throws Exception {
-        ServicosLoja.gerarBoleto();
+        ServicosLoja.addRoupa(new Camisa("Tommy", "cinza", 'M', 45, false, true));
+        ServicosLoja.addRoupa(new Camisa("Blue Shark", "cinza", 'M', 45, false, true));
+        ServicosLoja.addRoupa(new Camisa("Blue Shark", "cinza", 'M', 45, false, true));
+        ServicosLoja.addRoupa(new Camisa("Blue Shark", "cinza", 'M', 45, false, true));
+        ServicosLoja.printRoupas();
 
-        ServicosLoja.print();
+        ServicosLoja.venderRoupa("Blue Shark", 2);
+        ServicosLoja.printRoupas();
     }
 }

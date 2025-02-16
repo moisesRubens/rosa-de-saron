@@ -19,33 +19,22 @@ public class ServicosLoja {
     public static void venderRoupa(String nomeProduto, int quantidade) {
         Iterator<Roupa> iterator = estoque.iterator();
         int quant = 0;
-
         while(iterator.hasNext()) {
             Roupa roupa = iterator.next();
-            if(roupa.getNome().equals(nomeProduto)) {
+            if(roupa.getNome().equals(nomeProduto) && quant<quantidade) {
                 iterator.remove();
                 quant++;
             }
-            if(quantidade == quant) { break; }
         }
     }
 
-    public static void print() {
-        if (estoque.isEmpty()) {
-            System.out.println("NAO HA ROUPAS");
+    public static void printRoupas() {
+        if(estoque.isEmpty()) {
+            System.out.println("SEM ROUPAS");
+            return;
         }
-
         for (Roupa roupa : estoque) {
-            if (roupa instanceof Camisa camisa) {
-                System.out.println("CAMISA: " + camisa.getNome());
-                System.out.println("TAMANHO: " + camisa.getTamanho());
-                System.out.println("PRECO: " + camisa.getValor());
-            } else {
-                Calca calca = (Calca) roupa;
-                System.out.println("CALCA: " + calca.getNome());
-                System.out.println("TAMANHO: " + calca.getTamanho());
-                System.out.println("PRECO: " + calca.getValor());
-            }
+            System.out.println("NOME: " + roupa.getNome());
             System.out.println();
         }
     }
