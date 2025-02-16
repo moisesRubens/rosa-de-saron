@@ -1,4 +1,4 @@
-package dominio;
+package dominio.produtos;
 
 public class Calca extends Roupa {
     protected String peCalca;

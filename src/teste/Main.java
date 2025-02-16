@@ -1,10 +1,8 @@
 package teste;
 
-import dominio.Calca;
-import dominio.Camisa;
+import dominio.integrantes.Cliente;
+import dominio.produtos.Camisa;
 import servico.ServicosLoja;
-
-import java.io.IOException;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
@@ -16,7 +14,10 @@ public class Main {
         ServicosLoja.addRoupa(new Camisa("Blue Shark", "cinza", 'M', 45, false, true));
         ServicosLoja.printRoupas();
 
-        ServicosLoja.venderRoupa("Blue Shark", 2);
+
+        Cliente eu = new Cliente("moises", "123", "mouiisesrubens");
+        eu.comprar("Tommy", 1);
+
         ServicosLoja.printRoupas();
     }
 }

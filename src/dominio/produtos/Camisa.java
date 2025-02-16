@@ -1,4 +1,4 @@
-package dominio;
+package dominio.produtos;
 
 public class Camisa extends Roupa {
     private boolean gola;

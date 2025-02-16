@@ -1,4 +1,4 @@
-package dominio;
+package dominio.produtos;
 
 public abstract class Roupa {
     protected String nome;

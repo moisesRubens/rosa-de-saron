@@ -1,8 +1,6 @@
 package servico;
 
-import dominio.Calca;
-import dominio.Camisa;
-import dominio.Roupa;
+import dominio.produtos.Roupa;
 
 import java.io.File;
 import java.io.IOException;
