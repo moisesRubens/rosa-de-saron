@@ -12,6 +12,12 @@ public class Cliente extends Pessoa {
     }
 
     public void comprar(String nomeRoupa, int quantidade) {
-        ServicosLoja.venderRoupa(nomeRoupa, quantidade);
+        if(ServicosLoja.venderRoupa(nomeRoupa, quantidade)) {
+            System.out.println("COMPRADO");
+        }
+    }
+
+    public void verRoupas() {
+        ServicosLoja.printRoupas();
     }
 }

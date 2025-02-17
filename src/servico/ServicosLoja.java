@@ -14,7 +14,12 @@ public class ServicosLoja {
         estoque.add(roupa);
     }
 
-    public static void venderRoupa(String nomeProduto, int quantidade) {
+    public static boolean venderRoupa(String nomeProduto, int quantidade) {
+        if(getQuantidadeRoupaX(nomeProduto) < quantidade) {
+            System.out.println("NAO HA ROUPAS DESTE MODELO SUFICIENTE PARA VENDER");
+            return false;
+        }
+
         Iterator<Roupa> iterator = estoque.iterator();
         int quant = 0;
         while(iterator.hasNext()) {
@@ -24,6 +29,8 @@ public class ServicosLoja {
                 quant++;
             }
         }
+        gerarComprovante();
+        return true;
     }
 
     public static void printRoupas() {
@@ -37,8 +44,23 @@ public class ServicosLoja {
         }
     }
 
-    public static void gerarBoleto() throws IOException{
-        File file = new File("boleto-compras\\compra.txt");
-        System.out.println("FILE CREATED: "+file.createNewFile());
+    private static int getQuantidadeRoupaX(String nome) {
+        int quantidade = 0;
+        for(Roupa roupa: estoque) {
+            if(roupa.getNome().equals(nome)) {
+                quantidade++;
+            }
+        }
+        return quantidade;
+    }
+
+    private static void gerarComprovante() {
+        File file = new File("comprovantes\\compra.txt");
+        try {
+            file.createNewFile();
+        } catch(IOException e) {
+            System.out.println("Excecao de createNewFile sendo tratada");
+        }
+        System.out.println("Finalizando arquivo compra.txt");
     }
 }
