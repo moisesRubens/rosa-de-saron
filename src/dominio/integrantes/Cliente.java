@@ -11,7 +11,7 @@ public class Cliente extends Pessoa {
         adimplencia = true;
     }
 
-    public void comprar(String nomeRoupa, int quantidade) {
+    public void comprarRoupas(String nomeRoupa, int quantidade) {
         if(ServicosLoja.venderRoupa(nomeRoupa, quantidade)) {
             System.out.println("COMPRADO");
         }

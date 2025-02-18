@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class ServicosLoja {
-    static ArrayList<Roupa> estoque = new ArrayList<>();
+    public static ArrayList<Roupa> estoque = new ArrayList<>();
 
     public static void addRoupa(Roupa roupa) {
         estoque.add(roupa);
