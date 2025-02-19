@@ -40,6 +40,7 @@ public class ServicosLoja {
         }
         for (Roupa roupa : estoque) {
             System.out.println("NOME: " + roupa.getNome());
+            System.out.println("VALOR: " + roupa.getValor());
             System.out.println();
         }
     }
@@ -63,4 +64,16 @@ public class ServicosLoja {
         }
         System.out.println("Finalizando arquivo compra.txt");
     }
+
+    public static void addDesconto(Double descontoPorcentagem, String nomeRoupa) {
+        for(Roupa roupa: estoque) {
+            if(roupa.getNome().equals(nomeRoupa)) {
+                roupa.setDesconto(descontoPorcentagem);
+                Double novoValor = roupa.getValor()-descontoPorcentagem*roupa.getValor();
+                roupa.setValor(novoValor);
+            }
+        }
+    }
+
+
 }
