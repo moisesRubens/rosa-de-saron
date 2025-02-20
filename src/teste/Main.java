@@ -8,12 +8,16 @@ import servico.ServicosLoja;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        ServicosLoja.addRoupa(new Camisa("Tommy", "cinza", 'M', 45, false, true));
-        System.out.println("ANTES DO DESCONTO");
+        System.out.println("DURANTE A CRIACAO:");
+        ServicosLoja.addRoupa(new Camisa("Polo", "Preta", 'M', 70D, true, true));
         ServicosLoja.printRoupas();
 
-        ServicosLoja.addDesconto(0.1, "Tommy");
-        System.out.println("DEPOIS DO DESCONTO");
+        System.out.println("COM DESCONTO:");
+        ServicosLoja.addDesconto(0.15D, "Polo");
+        ServicosLoja.printRoupas();
+
+        System.out.println("SEM DESCONTO:");
+        ServicosLoja.removeDesconto("Polo");
         ServicosLoja.printRoupas();
 
     }

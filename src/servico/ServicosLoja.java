@@ -65,12 +65,22 @@ public class ServicosLoja {
         System.out.println("Finalizando arquivo compra.txt");
     }
 
-    public static void addDesconto(Double descontoPorcentagem, String nomeRoupa) {
+    public static void addDesconto(double descontoPorcentagem, String nomeRoupa) {
         for(Roupa roupa: estoque) {
             if(roupa.getNome().equals(nomeRoupa)) {
-                roupa.setDesconto(descontoPorcentagem);
-                Double novoValor = roupa.getValor()-descontoPorcentagem*roupa.getValor();
+                double novoValor = roupa.getValor()-descontoPorcentagem*roupa.getValor();
+                roupa.setDescontoValor(descontoPorcentagem*roupa.getValor());
                 roupa.setValor(novoValor);
+            }
+        }
+    }
+
+    public static void removeDesconto(String nomeRoupa) {
+        for(Roupa roupa: estoque) {
+            if(roupa.getNome().equals(nomeRoupa) && roupa.getDescontoValor() != 0) {
+                double valor = roupa.getValor()+roupa.getDescontoValor();
+                roupa.setValor(valor);
+                roupa.setDescontoValor(0);
             }
         }
     }
