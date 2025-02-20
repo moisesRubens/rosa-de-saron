@@ -14,23 +14,23 @@ public class ServicosLoja {
         estoque.add(roupa);
     }
 
-    public static boolean venderRoupa(String nomeProduto, int quantidade) {
+    public static ArrayList<Roupa> venderRoupa(String nomeProduto, int quantidade) {
         if(getQuantidadeRoupaX(nomeProduto) < quantidade) {
             System.out.println("NAO HA ROUPAS DESTE MODELO SUFICIENTE PARA VENDER");
-            return false;
+            return null;
         }
 
+        ArrayList<Roupa> roupas = new ArrayList<>();
         Iterator<Roupa> iterator = estoque.iterator();
-        int quant = 0;
         while(iterator.hasNext()) {
             Roupa roupa = iterator.next();
-            if(roupa.getNome().equals(nomeProduto) && quant<quantidade) {
+            if(roupa.getNome().equals(nomeProduto) && roupas.size()<quantidade) {
+                roupas.add(roupa);
                 iterator.remove();
-                quant++;
             }
         }
         gerarComprovante();
-        return true;
+        return roupas;
     }
 
     public static void printRoupas() {
