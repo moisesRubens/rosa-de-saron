@@ -1,0 +1,9 @@
+DADOS DA COMPRA:
+-----------------
+NOME: BLUE SHARK
+COR: azul e preto
+VALOR: 67.99
+
+NOME: BLUE SHARK
+COR: azul e preto
+VALOR: 67.99

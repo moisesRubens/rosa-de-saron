@@ -11,17 +11,15 @@ import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        ServicosLoja.addRoupa(new Camisa("Polo", "Preta", 'M', 70D, true, true));
-        ServicosLoja.addRoupa(new Camisa("Polo", "Preta", 'M', 70D, true, true));
-        ServicosLoja.addRoupa(new Camisa("Polo", "Preta", 'M', 70D, true, true));
-
-        Cliente eu = new Cliente("moises", "12", "moisesrubens");
-        eu.comprarRoupas("POLO", 1);
-
+        Cliente eu = new Cliente("Moises", "123", "moisesrubens");
+        ServicosLoja.addRoupa(new Camisa("blue shark", "azul e preto", 'M', 67.99D, false, true));
+        ServicosLoja.addRoupa(new Camisa("blue shark", "azul e preto", 'M', 67.99D, false, true));
+        ServicosLoja.addRoupa(new Camisa("nike", "vermelho", 'M', 99.99D, false, true));
+        ServicosLoja.addRoupa(new Camisa("Adidas", "Branco", 'M', 75.99D, true, true));
         ServicosLoja.printRoupas();
 
-        System.out.println("COMPRA DO CLIENTE");
-        ArrayList<Roupa> roupas2 = eu.getCompras();
-        System.out.println(roupas2);
+        eu.comprarRoupas("blue shark", 2);
+
+        ServicosLoja.printRoupas();
     }
 }

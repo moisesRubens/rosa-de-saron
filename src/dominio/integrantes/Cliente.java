@@ -15,8 +15,10 @@ public class Cliente extends Pessoa {
     }
 
     public void comprarRoupas(String nomeRoupa, int quantidade) {
-        if(compras.addAll(ServicosLoja.venderRoupa(nomeRoupa, quantidade))) {
+        ArrayList<Roupa> compra = ServicosLoja.venderRoupa(nomeRoupa.toUpperCase(), quantidade);
+        if(compra != null) {
             System.out.println("COMPRA BEM SUCEDIDA");
+            ServicosLoja.gerarComprovante(compra);
         } else {
             System.out.println("NAO FOI POSSIVEL REALIZAR A COMPRA");
         }

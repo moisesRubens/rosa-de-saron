@@ -2,7 +2,9 @@ package servico;
 
 import dominio.produtos.Roupa;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -15,7 +17,7 @@ public class ServicosLoja {
     }
 
     public static ArrayList<Roupa> venderRoupa(String nomeProduto, int quantidade) {
-        if(getQuantidadeRoupaX(nomeProduto) < quantidade) {
+        if(getQuantidadeRoupaX(nomeProduto.toUpperCase()) < quantidade) {
             System.out.println("NAO HA ROUPAS DESTE MODELO SUFICIENTE PARA VENDER");
             return null;
         }
@@ -29,7 +31,6 @@ public class ServicosLoja {
                 iterator.remove();
             }
         }
-        gerarComprovante();
         return roupas;
     }
 
@@ -55,14 +56,20 @@ public class ServicosLoja {
         return quantidade;
     }
 
-    private static void gerarComprovante() {
-        File file = new File("comprovantes\\compra.txt");
-        try {
-            file.createNewFile();
+    public static void gerarComprovante(ArrayList<Roupa> compra) {
+        try(BufferedWriter file = new BufferedWriter(new FileWriter("comprovantes\\compra.txt"))) {
+            file.write("DADOS DA COMPRA:\n");
+            file.write("-----------------");
+            for(Roupa roupa: compra) {
+                file.write("\nNOME: "+roupa.getNome());
+                file.write("\nCOR: "+roupa.getCor());
+                file.write("\nVALOR: "+roupa.getValor()+"\n");
+            }
         } catch(IOException e) {
-            System.out.println("Excecao de createNewFile sendo tratada");
+            e.printStackTrace();
+        } finally {
+            System.out.println("COMPROVANTE DA COMPRA EMITIDO");
         }
-        System.out.println("Finalizando arquivo compra.txt");
     }
 
     public static void addDesconto(double descontoPorcentagem, String nomeRoupa) {
