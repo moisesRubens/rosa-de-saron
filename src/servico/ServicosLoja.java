@@ -3,10 +3,12 @@ package servico;
 import dominio.produtos.Roupa;
 
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Iterator;
 
 public class ServicosLoja {
@@ -58,7 +60,9 @@ public class ServicosLoja {
 
     public static void gerarComprovante(ArrayList<Roupa> compra) {
         try(BufferedWriter file = new BufferedWriter(new FileWriter("comprovantes\\compra.txt"))) {
-            file.write("DADOS DA COMPRA:\n");
+            DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.MEDIUM);
+            file.write(dateFormat.format(new Date())+"\n");
+            file.write("\nDADOS DA COMPRA:\n");
             file.write("-----------------");
             for(Roupa roupa: compra) {
                 file.write("\nNOME: "+roupa.getNome());
