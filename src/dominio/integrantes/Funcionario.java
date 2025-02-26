@@ -10,7 +10,7 @@ public class Funcionario extends Pessoa {
     }
 
     public void adicionarRoupas(Roupa roupa) {
-        ServicosLoja.addRoupa(roupa);
+        //ServicosLoja.addRoupa(roupa);
     }
 
     public boolean getRoupa(String nomeRoupa) {

@@ -1,0 +1,8 @@
+NIKE
+cinza
+50.0
+
+ADIDAS
+cinza
+50.0
+

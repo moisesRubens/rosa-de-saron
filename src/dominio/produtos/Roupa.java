@@ -12,6 +12,16 @@ public abstract class Roupa {
         this.valor = valor;
     }
 
+    @Override
+    public String toString() {
+        return "Roupa{" +
+                "nome='" + nome + '\'' +
+                ", cor='" + cor + '\'' +
+                ", valor=" + valor +
+                ", descontoValor=" + descontoValor +
+                '}';
+    }
+
     public double getDescontoValor() {
         return descontoValor;
     }
@@ -32,7 +42,7 @@ public abstract class Roupa {
 
     public void setCor(String cor) { this.cor = cor.toUpperCase(); }
 
-    public double getValor() {
+    public Double getValor() {
         return valor;
     }
 

@@ -2,20 +2,21 @@ package servico;
 
 import dominio.produtos.Roupa;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 
 public class ServicosLoja {
     public static ArrayList<Roupa> estoque = new ArrayList<>();
 
-    public static void addRoupa(Roupa roupa) {
-        estoque.add(roupa);
+    public static void addRoupa(Roupa roupa) throws IOException {
+        try(BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("componentes\\roupas.txt", true))) {
+            bufferedWriter.write(roupa.getNome()+"\n");
+            bufferedWriter.write(roupa.getCor()+"\n");
+            bufferedWriter.write(roupa.getValor().toString()+"\n\n");
+        }
     }
 
     public static ArrayList<Roupa> venderRoupa(String nomeProduto, int quantidade) {
@@ -34,6 +35,34 @@ public class ServicosLoja {
             }
         }
         return roupas;
+    }
+
+    public static void venderRoupa(String nomeRoupa) throws IOException {
+        File inputFile = new File("componentes\\roupas.txt");
+        File tempFile = new File("componentes\\temp_roupas.txt");
+
+        try(BufferedReader bufferedReader = new BufferedReader(new FileReader(inputFile));
+            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(tempFile))
+        ) {
+            String linha;
+            boolean deletado = false;
+
+            while ((linha = bufferedReader.readLine()) != null) {
+                if (nomeRoupa.equals(linha)) {
+                    deletado = true;
+                    bufferedReader.readLine();
+                    bufferedReader.readLine();
+                    bufferedReader.readLine();
+                    continue;
+                }
+                bufferedWriter.write(linha + "\n");
+            }
+        }
+        if(inputFile.delete() && tempFile.renameTo(inputFile)) {
+            System.out.println("Delete sucedido");
+        } else {
+            System.out.println("Deu erro em algo");
+        }
     }
 
     public static void printRoupas() {
