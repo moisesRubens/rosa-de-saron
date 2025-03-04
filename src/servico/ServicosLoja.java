@@ -1,5 +1,6 @@
 package servico;
 
+import dominio.integrantes.Cliente;
 import dominio.produtos.Roupa;
 
 import java.io.*;
@@ -10,6 +11,7 @@ import java.util.Iterator;
 
 public class ServicosLoja {
     public static ArrayList<Roupa> estoque = new ArrayList<>();
+    public static ArrayList<Cliente> clientes = new ArrayList<>();
 
     public static void addRoupa(Roupa roupa) throws IOException {
         try(BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("componentes\\roupas.txt", true))) {
@@ -125,5 +127,9 @@ public class ServicosLoja {
         }
     }
 
-
+    public static boolean cadastrarCliente(String nome, String email, String cpf) {
+        int ordem = clientes.size();
+        Cliente cliente = Cliente.criarCliente(nome, cpf, email, ordem, new ServicosLoja());
+        return clientes.add(cliente);
+    }
 }

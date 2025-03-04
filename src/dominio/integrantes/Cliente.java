@@ -6,12 +6,19 @@ import servico.ServicosLoja;
 import java.util.ArrayList;
 
 public class Cliente extends Pessoa {
+    Integer id;
     boolean adimplencia;
     ArrayList<Roupa> compras = new ArrayList<>();
 
-    public Cliente(String name, String cpf, String email) {
+    private Cliente(String name, String cpf, String email, int id) {
         super(name, cpf, email);
-        adimplencia = true;
+        this.id = id;
+        this.adimplencia = true;
+    }
+
+    public static Cliente criarCliente(String name, String cpf, String email, int id, ServicosLoja servico) {
+        if(servico == null) throw new IllegalStateException("Apenas pela classe ServicosLoja.java");
+        return new Cliente(name, cpf, email, id);
     }
 
     public void comprarRoupas(String nomeRoupa, int quantidade) {
