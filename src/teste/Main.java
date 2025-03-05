@@ -13,6 +13,8 @@ import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        System.out.println(ServicosLoja.cadastrarCliente("Moises", "moisesrubens", "123"));
+        ServicosLoja.addRoupa(new Camisa("a", "l", 'M', 45D, false, true));
+        Cliente cliente = new Cliente("moises", "1", "moisesrunems", 0);
+        cliente.comprarRoupas("a", 1);
     }
 }

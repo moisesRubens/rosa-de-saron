@@ -10,15 +10,18 @@ public class Cliente extends Pessoa {
     boolean adimplencia;
     ArrayList<Roupa> compras = new ArrayList<>();
 
-    private Cliente(String name, String cpf, String email, int id) {
+    public Cliente(String name, String cpf, String email, int id) {
         super(name, cpf, email);
         this.id = id;
         this.adimplencia = true;
     }
 
-    public static Cliente criarCliente(String name, String cpf, String email, int id, ServicosLoja servico) {
-        if(servico == null) throw new IllegalStateException("Apenas pela classe ServicosLoja.java");
-        return new Cliente(name, cpf, email, id);
+    public Integer getId() {
+        return id;
+    }
+
+    public boolean isAdimplencia() {
+        return adimplencia;
     }
 
     public void comprarRoupas(String nomeRoupa, int quantidade) {

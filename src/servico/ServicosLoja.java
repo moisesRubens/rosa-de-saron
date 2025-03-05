@@ -2,7 +2,6 @@ package servico;
 
 import dominio.integrantes.Cliente;
 import dominio.produtos.Roupa;
-
 import java.io.*;
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -22,54 +21,26 @@ public class ServicosLoja {
     }
 
     public static ArrayList<Roupa> venderRoupa(String nomeProduto, int quantidade) {
-        if(getQuantidadeRoupaX(nomeProduto.toUpperCase()) < quantidade) {
-            System.out.println("NAO HA ROUPAS DESTE MODELO SUFICIENTE PARA VENDER");
-            return null;
-        }
-
-        ArrayList<Roupa> roupas = new ArrayList<>();
-        Iterator<Roupa> iterator = estoque.iterator();
-        while(iterator.hasNext()) {
-            Roupa roupa = iterator.next();
-            if(roupa.getNome().equals(nomeProduto) && roupas.size()<quantidade) {
-                roupas.add(roupa);
-                iterator.remove();
-            }
-        }
-        return roupas;
-    }
-
-    public static void venderRoupa(String nomeRoupa) throws IOException {
-        File inputFile = new File("componentes\\roupas.txt");
-        File tempFile = new File("componentes\\temp_roupas.txt");
-
-        try(BufferedReader bufferedReader = new BufferedReader(new FileReader(inputFile));
-            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(tempFile))
-        ) {
-            String linha;
-            boolean deletado = false;
-
-            while ((linha = bufferedReader.readLine()) != null) {
-                if (nomeRoupa.equals(linha)) {
-                    deletado = true;
-                    bufferedReader.readLine();
-                    bufferedReader.readLine();
-                    bufferedReader.readLine();
-                    continue;
+        if(getRoupasSuficientes(nomeProduto, quantidade)) {
+            ArrayList<Roupa> roupas = new ArrayList<>();
+            Iterator<Roupa> iterator = estoque.iterator();
+            while(iterator.hasNext()) {
+                Roupa roupa = iterator.next();
+                if(roupa.getNome().equals(nomeProduto) && roupas.size()<quantidade) {
+                    roupas.add(roupa);
+                    iterator.remove();
                 }
-                bufferedWriter.write(linha + "\n");
             }
+            return roupas;
         }
-        if(inputFile.delete() && tempFile.renameTo(inputFile)) {
-            System.out.println("Delete sucedido");
-        } else {
-            System.out.println("Deu erro em algo");
-        }
+
+        System.out.println("NAO HÁ ROUPAS DESTE MODELO SUFICIENTE PARA VENDER");
+        return null;
     }
 
     public static void printRoupas() {
         if(estoque.isEmpty()) {
-            System.out.println("SEM ROUPAS");
+            System.out.println("ESTOQUE DE ROUPAS VAZIO");
             return;
         }
         for (Roupa roupa : estoque) {
@@ -79,14 +50,17 @@ public class ServicosLoja {
         }
     }
 
-    private static int getQuantidadeRoupaX(String nome) {
-        int quantidade = 0;
+    private static boolean getRoupasSuficientes(String nome, int quantidade) {
+        boolean contem = true;
+        int quantidadeEstoque = 0;
+
         for(Roupa roupa: estoque) {
             if(roupa.getNome().equals(nome)) {
-                quantidade++;
+                quantidadeEstoque++;
             }
         }
-        return quantidade;
+        if(quantidadeEstoque < quantidade) contem = false;
+        return contem;
     }
 
     public static void gerarComprovante(ArrayList<Roupa> compra) {
@@ -129,7 +103,19 @@ public class ServicosLoja {
 
     public static boolean cadastrarCliente(String nome, String email, String cpf) {
         int ordem = clientes.size();
-        Cliente cliente = Cliente.criarCliente(nome, cpf, email, ordem, new ServicosLoja());
+        Cliente cliente = new Cliente (nome, cpf, email, ordem);
         return clientes.add(cliente);
+    }
+
+    public static void verClientes() {
+        if(clientes.isEmpty()) System.out.println("LISTA DE CLIENTES VAZIA");
+
+        for(Cliente cliente: clientes) {
+            String situacao = "ADIMPLENTE";
+            if(!cliente.isAdimplencia()) situacao = "INADIMPLENTE";
+
+            System.out.println(cliente.getId()+" - "+situacao);
+            System.out.println("NOME: "+cliente.getNome());
+        }
     }
 }
