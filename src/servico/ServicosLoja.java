@@ -7,35 +7,31 @@ import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.Locale;
 
 public class ServicosLoja {
     public static ArrayList<Roupa> estoque = new ArrayList<>();
     public static ArrayList<Cliente> clientes = new ArrayList<>();
 
     public static void addRoupa(Roupa roupa) throws IOException {
-        try(BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("componentes\\roupas.txt", true))) {
-            bufferedWriter.write(roupa.getNome()+"\n");
-            bufferedWriter.write(roupa.getCor()+"\n");
-            bufferedWriter.write(roupa.getValor().toString()+"\n\n");
-        }
+        estoque.add(roupa);
     }
 
     public static ArrayList<Roupa> venderRoupa(String nomeProduto, int quantidade) {
-        if(getRoupasSuficientes(nomeProduto, quantidade)) {
-            ArrayList<Roupa> roupas = new ArrayList<>();
+        ArrayList<Roupa> roupas = new ArrayList<>();
+        if (!getRoupasSuficientes(nomeProduto, quantidade)) {
+            System.out.println("NAO HÁ ROUPAS DESTE MODELO SUFICIENTE PARA VENDER");
+        } else {
             Iterator<Roupa> iterator = estoque.iterator();
-            while(iterator.hasNext()) {
+            while (iterator.hasNext()) {
                 Roupa roupa = iterator.next();
-                if(roupa.getNome().equals(nomeProduto) && roupas.size()<quantidade) {
+                if (roupa.getNome().equals(nomeProduto) && roupas.size() < quantidade) {
                     roupas.add(roupa);
                     iterator.remove();
                 }
             }
-            return roupas;
         }
-
-        System.out.println("NAO HÁ ROUPAS DESTE MODELO SUFICIENTE PARA VENDER");
-        return null;
+        return roupas;
     }
 
     public static void printRoupas() {
@@ -50,22 +46,20 @@ public class ServicosLoja {
         }
     }
 
-    private static boolean getRoupasSuficientes(String nome, int quantidade) {
-        boolean contem = true;
+    public static boolean getRoupasSuficientes(String nome, int quantidade) {
         int quantidadeEstoque = 0;
 
         for(Roupa roupa: estoque) {
-            if(roupa.getNome().equals(nome)) {
+            if(roupa.getNome().equals(nome.toUpperCase()) && quantidadeEstoque<quantidade) {
                 quantidadeEstoque++;
             }
         }
-        if(quantidadeEstoque < quantidade) contem = false;
-        return contem;
+        return (quantidadeEstoque == quantidade);
     }
 
     public static void gerarComprovante(ArrayList<Roupa> compra) {
-        try(BufferedWriter file = new BufferedWriter(new FileWriter("comprovantes\\compra.txt"))) {
-            DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.MEDIUM);
+        try(BufferedWriter file = new BufferedWriter(new FileWriter("compra.txt"))) {
+            DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.LONG, new Locale("pt", "BR"));
             file.write(dateFormat.format(new Date())+"\n");
             file.write("\nDADOS DA COMPRA:\n");
             file.write("-----------------");

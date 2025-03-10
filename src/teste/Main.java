@@ -16,5 +16,6 @@ public class Main {
         ServicosLoja.addRoupa(new Camisa("a", "l", 'M', 45D, false, true));
         Cliente cliente = new Cliente("moises", "1", "moisesrunems", 0);
         cliente.comprarRoupas("a", 1);
+//        System.out.println(ServicosLoja.getRoupasSuficientes("a", 2));
     }
 }

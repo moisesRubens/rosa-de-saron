@@ -26,7 +26,7 @@ public class Cliente extends Pessoa {
 
     public void comprarRoupas(String nomeRoupa, int quantidade) {
         ArrayList<Roupa> compra = ServicosLoja.venderRoupa(nomeRoupa.toUpperCase(), quantidade);
-        if(compra != null) {
+        if(!compra.isEmpty()) {
             System.out.println("COMPRA BEM SUCEDIDA");
             ServicosLoja.gerarComprovante(compra);
         } else {
