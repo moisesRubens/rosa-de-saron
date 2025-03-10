@@ -4,7 +4,6 @@ public abstract class Roupa {
     String nome;
     String cor;
     double valor;
-    double descontoValor;
 
     public Roupa(String nome, String cor, double valor) {
         this.nome = nome.toUpperCase();
@@ -17,17 +16,8 @@ public abstract class Roupa {
         return "Roupa{" +
                 "nome='" + nome + '\'' +
                 ", cor='" + cor + '\'' +
-                ", valor=" + valor +
-                ", descontoValor=" + descontoValor +
+                ", valor=" + valor+
                 '}';
-    }
-
-    public double getDescontoValor() {
-        return descontoValor;
-    }
-
-    public void setDescontoValor(double descontoValor) {
-        this.descontoValor = descontoValor;
     }
 
     public String getNome() {

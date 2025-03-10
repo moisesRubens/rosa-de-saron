@@ -6,16 +6,15 @@ import dominio.integrantes.Funcionario;
 import dominio.integrantes.Pessoa;
 import dominio.produtos.Calca;
 import dominio.produtos.Camisa;
-import dominio.produtos.Roupa;
 import servico.ServicosLoja;
 
-import java.util.ArrayList;
+import java.time.LocalDate;
 
 public class Main {
     public static void main(String[] args) throws Exception {
         ServicosLoja.addRoupa(new Camisa("a", "l", 'M', 45D, false, true));
-        Cliente cliente = new Cliente("moises", "1", "moisesrunems", 0);
-        cliente.comprarRoupas("a", 1);
-//        System.out.println(ServicosLoja.getRoupasSuficientes("a", 2));
+        ServicosLoja.addDesconto(0.10, "a", LocalDate.of(2025, 4, 3));
+        ServicosLoja.printDescontosValidade();
+
     }
 }

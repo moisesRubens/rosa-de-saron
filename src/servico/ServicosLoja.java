@@ -4,14 +4,14 @@ import dominio.integrantes.Cliente;
 import dominio.produtos.Roupa;
 import java.io.*;
 import java.text.DateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.Locale;
+import java.time.LocalDate;
+import java.util.*;
 
 public class ServicosLoja {
     public static ArrayList<Roupa> estoque = new ArrayList<>();
     public static ArrayList<Cliente> clientes = new ArrayList<>();
+    public static Map<String, Double> descontos = new HashMap<>();
+    public static Map<String, LocalDate> descontosValidade = new HashMap<>();
 
     public static void addRoupa(Roupa roupa) throws IOException {
         estoque.add(roupa);
@@ -75,24 +75,34 @@ public class ServicosLoja {
         }
     }
 
-    public static void addDesconto(double descontoPorcentagem, String nomeRoupa) {
+    public static void addDesconto(Double descontoPorcentagem, String nomeRoupa, LocalDate validade) {
         for(Roupa roupa: estoque) {
-            if(roupa.getNome().equals(nomeRoupa)) {
-                double novoValor = roupa.getValor()-descontoPorcentagem*roupa.getValor();
-                roupa.setDescontoValor(descontoPorcentagem*roupa.getValor());
+            if(roupa.getNome().equals(nomeRoupa.toUpperCase())) {
+                Double descontoValor = roupa.getValor()*descontoPorcentagem;
+                double novoValor = roupa.getValor()-descontoValor;
+                descontos.put(roupa.getNome(), descontoValor);
                 roupa.setValor(novoValor);
+                descontosValidade.put(roupa.getNome(), LocalDate.now());
             }
         }
     }
 
     public static void removeDesconto(String nomeRoupa) {
         for(Roupa roupa: estoque) {
-            if(roupa.getNome().equals(nomeRoupa) && roupa.getDescontoValor() != 0) {
-                double valor = roupa.getValor()+roupa.getDescontoValor();
+            if(roupa.getNome().equals(nomeRoupa.toUpperCase()) && descontos.containsKey(roupa.getNome())) {
+                double valor = roupa.getValor()+ descontos.get(roupa.getNome());
                 roupa.setValor(valor);
-                roupa.setDescontoValor(0);
             }
         }
+        descontos.remove(nomeRoupa.toUpperCase());
+    }
+
+    public static void printDescontos() {
+        System.out.println(descontos);
+    }
+
+    public static void printDescontosValidade() {
+        System.out.println(descontosValidade);
     }
 
     public static boolean cadastrarCliente(String nome, String email, String cpf) {
