@@ -10,8 +10,7 @@ import java.util.*;
 public class ServicosLoja {
     public static ArrayList<Roupa> estoque = new ArrayList<>();
     public static ArrayList<Cliente> clientes = new ArrayList<>();
-    public static Map<String, Double> descontos = new HashMap<>();
-    public static Map<String, LocalDate> descontosValidade = new HashMap<>();
+    public static Map<String, Desconto> descontos = new HashMap<>();
 
     public static void addRoupa(Roupa roupa) throws IOException {
         estoque.add(roupa);
@@ -34,7 +33,7 @@ public class ServicosLoja {
         return roupas;
     }
 
-    public static void printRoupas() {
+    public static void getRoupas() {
         if(estoque.isEmpty()) {
             System.out.println("ESTOQUE DE ROUPAS VAZIO");
             return;
@@ -79,10 +78,9 @@ public class ServicosLoja {
         for(Roupa roupa: estoque) {
             if(roupa.getNome().equals(nomeRoupa.toUpperCase())) {
                 Double descontoValor = roupa.getValor()*descontoPorcentagem;
-                double novoValor = roupa.getValor()-descontoValor;
-                descontos.put(roupa.getNome(), descontoValor);
+                Double novoValor = roupa.getValor()-descontoValor;
                 roupa.setValor(novoValor);
-                descontosValidade.put(roupa.getNome(), LocalDate.now());
+                descontos.put(roupa.getNome(), new Desconto(descontoValor, validade, roupa.getNome()));
             }
         }
     }
@@ -90,19 +88,16 @@ public class ServicosLoja {
     public static void removeDesconto(String nomeRoupa) {
         for(Roupa roupa: estoque) {
             if(roupa.getNome().equals(nomeRoupa.toUpperCase()) && descontos.containsKey(roupa.getNome())) {
-                double valor = roupa.getValor()+ descontos.get(roupa.getNome());
+                Desconto desconto = descontos.get(roupa.getNome());
+                double valor = roupa.getValor()+desconto.getValorDesconto();
                 roupa.setValor(valor);
             }
         }
         descontos.remove(nomeRoupa.toUpperCase());
     }
 
-    public static void printDescontos() {
+    public static void getDescontos() {
         System.out.println(descontos);
-    }
-
-    public static void printDescontosValidade() {
-        System.out.println(descontosValidade);
     }
 
     public static boolean cadastrarCliente(String nome, String email, String cpf) {

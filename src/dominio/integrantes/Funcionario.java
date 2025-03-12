@@ -23,7 +23,7 @@ public class Funcionario extends Pessoa {
     }
 
     public void verEstoque() {
-        ServicosLoja.printRoupas();
+        ServicosLoja.getRoupas();
     }
 }
 

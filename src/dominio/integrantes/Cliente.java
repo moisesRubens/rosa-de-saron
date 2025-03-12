@@ -34,9 +34,7 @@ public class Cliente extends Pessoa {
         }
     }
 
-    public void verRoupas() {
-        ServicosLoja.printRoupas();
-    }
+    public void verRoupas() { ServicosLoja.getRoupas(); }
 
     public ArrayList<Roupa> getCompras() {
         return compras;
