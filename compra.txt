@@ -1,7 +1,7 @@
-10 de março de 2025
+13 de março de 2025
 
 DADOS DA COMPRA:
 -----------------
-NOME: A
+NOME: ABC
 COR: l
-VALOR: 45.0
+VALOR: 39.6

@@ -10,14 +10,17 @@ public class Cliente extends Pessoa {
     boolean adimplencia;
     ArrayList<Roupa> compras = new ArrayList<>();
 
-    public Cliente(String name, String cpf, String email, int id) {
+    public Cliente(String name, String cpf, String email) {
         super(name, cpf, email);
-        this.id = id;
         this.adimplencia = true;
     }
 
     public Integer getId() {
         return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public boolean isAdimplencia() {
@@ -34,7 +37,7 @@ public class Cliente extends Pessoa {
         }
     }
 
-    public void verRoupas() { ServicosLoja.getRoupas(); }
+    public void verRoupas() { ServicosLoja.verRoupas(); }
 
     public ArrayList<Roupa> getCompras() {
         return compras;

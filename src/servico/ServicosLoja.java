@@ -5,6 +5,7 @@ import dominio.produtos.Roupa;
 import java.io.*;
 import java.text.DateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class ServicosLoja {
@@ -18,7 +19,7 @@ public class ServicosLoja {
 
     public static ArrayList<Roupa> venderRoupa(String nomeProduto, int quantidade) {
         ArrayList<Roupa> roupas = new ArrayList<>();
-        if (!getRoupasSuficientes(nomeProduto, quantidade)) {
+        if (!verificarRoupasSuficientes(nomeProduto, quantidade)) {
             System.out.println("NAO HÁ ROUPAS DESTE MODELO SUFICIENTE PARA VENDER");
         } else {
             Iterator<Roupa> iterator = estoque.iterator();
@@ -33,7 +34,7 @@ public class ServicosLoja {
         return roupas;
     }
 
-    public static void getRoupas() {
+    public static void verRoupas() {
         if(estoque.isEmpty()) {
             System.out.println("ESTOQUE DE ROUPAS VAZIO");
             return;
@@ -45,7 +46,7 @@ public class ServicosLoja {
         }
     }
 
-    public static boolean getRoupasSuficientes(String nome, int quantidade) {
+    public static boolean verificarRoupasSuficientes(String nome, int quantidade) {
         int quantidadeEstoque = 0;
 
         for(Roupa roupa: estoque) {
@@ -58,19 +59,19 @@ public class ServicosLoja {
 
     public static void gerarComprovante(ArrayList<Roupa> compra) {
         try(BufferedWriter file = new BufferedWriter(new FileWriter("compra.txt"))) {
-            DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.LONG, new Locale("pt", "BR"));
-            file.write(dateFormat.format(new Date())+"\n");
+            LocalDate now = LocalDate.now();
+            DateTimeFormatter formatDate = DateTimeFormatter.ofPattern("dd 'de' MMMM 'de' yyyy", new Locale("pt", "BR"));
+            file.write(now.format(formatDate)+"\n");
             file.write("\nDADOS DA COMPRA:\n");
             file.write("-----------------");
             for(Roupa roupa: compra) {
                 file.write("\nNOME: "+roupa.getNome());
                 file.write("\nCOR: "+roupa.getCor());
                 file.write("\nVALOR: "+roupa.getValor()+"\n");
+                System.out.println("COMPROVANTE DA COMPRA EMITIDO");
             }
         } catch(IOException e) {
             e.printStackTrace();
-        } finally {
-            System.out.println("COMPROVANTE DA COMPRA EMITIDO");
         }
     }
 
@@ -85,34 +86,37 @@ public class ServicosLoja {
         }
     }
 
-    public static void removeDesconto(String nomeRoupa) {
+    public static void removerDesconto(String nomeRoupa) {
+        if(!descontos.containsKey(nomeRoupa.toUpperCase())) {
+            System.out.println("ESTA ROUPA NÃO TEM DESCONTO APLICADO");
+            return;
+        }
         for(Roupa roupa: estoque) {
-            if(roupa.getNome().equals(nomeRoupa.toUpperCase()) && descontos.containsKey(roupa.getNome())) {
-                Desconto desconto = descontos.get(roupa.getNome());
-                double valor = roupa.getValor()+desconto.getValorDesconto();
+            if(roupa.getNome().equals(nomeRoupa.toUpperCase())) {
+                double valorDesconto = descontos.get(roupa.getNome()).getValorDesconto();
+                double valor = roupa.getValor()+valorDesconto;
                 roupa.setValor(valor);
             }
         }
         descontos.remove(nomeRoupa.toUpperCase());
     }
 
-    public static void getDescontos() {
+    public static void verDescontos() {
         System.out.println(descontos);
     }
 
-    public static boolean cadastrarCliente(String nome, String email, String cpf) {
-        int ordem = clientes.size();
-        Cliente cliente = new Cliente (nome, cpf, email, ordem);
+    public static boolean cadastrarCliente(Cliente cliente) {
+        cliente.setId(clientes.size());
         return clientes.add(cliente);
     }
 
     public static void verClientes() {
-        if(clientes.isEmpty()) System.out.println("LISTA DE CLIENTES VAZIA");
-
+        if(clientes.isEmpty()) {
+            System.out.println("LISTA DE CLIENTES VAZIA");
+            return;
+        }
         for(Cliente cliente: clientes) {
-            String situacao = "ADIMPLENTE";
-            if(!cliente.isAdimplencia()) situacao = "INADIMPLENTE";
-
+            String situacao = (cliente.isAdimplencia()) ?"ADIMPLENTE" :"INADIMPLENTE";
             System.out.println(cliente.getId()+" - "+situacao);
             System.out.println("NOME: "+cliente.getNome());
         }
