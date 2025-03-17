@@ -13,8 +13,17 @@ public class ServicosLoja {
     public static ArrayList<Cliente> clientes = new ArrayList<>();
     public static Map<String, Desconto> descontos = new HashMap<>();
 
-    public static void addRoupa(Roupa roupa) throws IOException {
+    public static void addRoupa(Roupa roupa) {
         estoque.add(roupa);
+    }
+
+    public static void addRoupa(Roupa roupa, boolean inFile) {
+        try(BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("roupas.txt", true))) {
+            String informacao = roupa.getNome()+"\n"+roupa.getCor()+"\n"+roupa.getValor()+"\n\n";
+            bufferedWriter.write(informacao);
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static ArrayList<Roupa> venderRoupa(String nomeProduto, int quantidade) {
