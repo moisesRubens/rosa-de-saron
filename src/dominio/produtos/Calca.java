@@ -6,7 +6,7 @@ public class Calca extends Roupa {
 
     public Calca(String nome, String cor, int tamanho, double valor, String peCalca) {
         super(nome, cor, valor);
-        this.peCalca = peCalca;
+        this.peCalca = peCalca.toUpperCase();
         this.tamanho = tamanho;
     }
 

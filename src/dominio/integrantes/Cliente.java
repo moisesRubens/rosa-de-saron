@@ -27,7 +27,7 @@ public class Cliente extends Pessoa {
         return adimplencia;
     }
 
-    public void comprarRoupas(String nomeRoupa, int quantidade) {
+    /*public void comprarRoupas(String nomeRoupa, int quantidade) {
         ArrayList<Roupa> compra = ServicosLoja.venderRoupa(nomeRoupa.toUpperCase(), quantidade);
         if(!compra.isEmpty()) {
             System.out.println("COMPRA BEM SUCEDIDA");
@@ -35,7 +35,7 @@ public class Cliente extends Pessoa {
         } else {
             System.out.println("NAO FOI POSSIVEL REALIZAR A COMPRA");
         }
-    }
+    }*/
 
     public void verRoupas() { ServicosLoja.verRoupas(); }
 

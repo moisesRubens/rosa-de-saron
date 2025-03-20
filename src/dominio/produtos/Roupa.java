@@ -5,9 +5,13 @@ public abstract class Roupa {
     String cor;
     double valor;
 
+    public Roupa() {
+
+    }
+
     public Roupa(String nome, String cor, double valor) {
         this.nome = nome.toUpperCase();
-        this.cor = cor;
+        this.cor = cor.toUpperCase();
         this.valor = valor;
     }
 

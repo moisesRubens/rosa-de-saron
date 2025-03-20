@@ -1,46 +1,120 @@
 package servico;
 
 import dominio.integrantes.Cliente;
+import dominio.produtos.Calca;
+import dominio.produtos.Camisa;
 import dominio.produtos.Roupa;
 import java.io.*;
 import java.text.DateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ServicosLoja {
+    enum Produtos {
+        CAMISA,
+        CALCA;
+    }
+
     public static ArrayList<Roupa> estoque = new ArrayList<>();
     public static ArrayList<Cliente> clientes = new ArrayList<>();
     public static Map<String, Desconto> descontos = new HashMap<>();
 
-    public static void addRoupa(Roupa roupa) {
-        estoque.add(roupa);
+    public static Camisa criarCamisa(String nome, String cor, char tamanho, double valor, boolean gola, boolean manga) {
+        return new Camisa(nome, cor, tamanho, valor, gola, manga);
     }
 
-    public static void addRoupa(Roupa roupa, boolean inFile) {
-        try(BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("roupas.txt", true))) {
-            String informacao = roupa.getNome()+"\n"+roupa.getCor()+"\n"+roupa.getValor()+"\n\n";
-            bufferedWriter.write(informacao);
-        } catch(IOException e) {
-            e.printStackTrace();
+    public static ArrayList<Roupa> criarCamisa(String nome, String cor, char tamanho, double valor, boolean gola, boolean manga, int quantidade) {
+        ArrayList<Roupa> camisas = new ArrayList<>();
+
+        for(int i=1; i<=quantidade; i++) {
+            camisas.add(ServicosLoja.criarCamisa(nome, cor, tamanho, valor, gola, manga));
         }
+        return camisas;
     }
 
-    public static ArrayList<Roupa> venderRoupa(String nomeProduto, int quantidade) {
-        ArrayList<Roupa> roupas = new ArrayList<>();
-        if (!verificarRoupasSuficientes(nomeProduto, quantidade)) {
-            System.out.println("NAO HÁ ROUPAS DESTE MODELO SUFICIENTE PARA VENDER");
-        } else {
-            Iterator<Roupa> iterator = estoque.iterator();
-            while (iterator.hasNext()) {
-                Roupa roupa = iterator.next();
-                if (roupa.getNome().equals(nomeProduto) && roupas.size() < quantidade) {
-                    roupas.add(roupa);
-                    iterator.remove();
+    public static Calca criarCalca(String nome, String cor, int tamanho, double valor, String peCalca) {
+        return new Calca(nome, cor, tamanho, valor, peCalca);
+    }
+
+    public static ArrayList<Roupa> criarCalca(String nome, String cor, int tamanho, double valor, String peCalca, int quantidade) {
+        ArrayList<Roupa> calcas = new ArrayList<>();
+
+        for(int i=1; i<=quantidade; i++) {
+            ServicosLoja.criarCalca(nome, cor, tamanho, valor, peCalca);
+        }
+        return calcas;
+    }
+
+    public static void addRoupa(ArrayList<Roupa> roupas) throws IOException{
+        try(BufferedWriter bufferedWriterCamisas = new BufferedWriter(new FileWriter("camisas.txt", true));
+            BufferedWriter bufferedWriterCalcas = new BufferedWriter(new FileWriter("calcas.txt", true))) {
+            for (Roupa roupa : roupas) {
+                if (roupa instanceof Camisa camisa) {
+                    bufferedWriterCamisas.write(camisa.getNome()+","+camisa.getValor()+","+camisa.getCor()+
+                            ","+camisa.getTamanho()+","+camisa.isManga()+","+camisa.isGola());
+                    bufferedWriterCamisas.newLine();
+                } else {
+                    Calca calca = (Calca) roupa;
+                    bufferedWriterCalcas.write(calca.getNome()+","+calca.getValor()+","+calca.getCor()+
+                            ","+calca.getTamanho()+","+calca.getPeCalca());
+                    bufferedWriterCalcas.newLine();
                 }
             }
         }
-        return roupas;
+    }
+
+    public static ArrayList<Roupa> venderRoupas(Produtos tipo, String nome, char tamanho, int quantidade) throws IOException {
+        ArrayList<Roupa> roupas = new ArrayList<>();
+        File compra = getArquivoCompra(tipo, nome, tamanho, quantidade);
+        try(BufferedReader bufferedReader = new BufferedReader(new FileReader(compra))) {
+            Scanner scanner = new Scanner(compra);
+            scanner.useDelimiter("\n");
+            while(scanner.hasNext()) {
+                scanner.next();
+                roupas.add(ServicosLoja.criarCamisa())
+            }
+        }
+        return null;
+    }
+
+    public static File getArquivoCompra(Produtos tipo, String nome, char tamanho, int quantidade) throws IOException {
+        String arquivo = (tipo.equals(Produtos.CAMISA)) ? "camisas.txt" : "calcas.txt";
+
+        File original = new File(arquivo);
+        File temporario = new File("temporario.txt");
+        File compra = new File("compra.txt");
+
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(original));
+             BufferedWriter bufferedWriterTemporario = new BufferedWriter(new FileWriter(temporario));
+             BufferedWriter bufferedWriterCompra = new BufferedWriter(new FileWriter(compra))) {
+
+            String linha;
+            int quant = 0;
+            while ((linha = bufferedReader.readLine()) != null) {
+                if (linha.contains(nome) && linha.contains(String.valueOf(tamanho)) && quant<quantidade) {
+                    bufferedWriterCompra.write(linha);
+                    bufferedWriterCompra.newLine();
+                    quant++;
+                } else {
+                    bufferedWriterTemporario.write(linha);
+                    bufferedWriterTemporario.newLine();
+                }
+            }
+        }
+
+        if (!original.delete()) {
+            System.out.println("Erro ao deletar");
+            return null;
+        }
+        if (!temporario.renameTo(original)) {
+            System.out.println("Erro ao renomear atualizar original");
+            return null;
+        }
+
+        return compra;
     }
 
     public static void verRoupas() {

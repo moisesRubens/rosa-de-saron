@@ -5,6 +5,10 @@ public class Camisa extends Roupa {
     private boolean manga;
     private char tamanho;
 
+    public Camisa() {
+
+    }
+
     public Camisa(String nome, String cor, char tamanho, double valor, boolean gola, boolean manga) {
         super(nome, cor, valor);
         this.gola = gola;
