@@ -1,7 +1,0 @@
-13 de março de 2025
-
-DADOS DA COMPRA:
------------------
-NOME: ABC
-COR: l
-VALOR: 39.6

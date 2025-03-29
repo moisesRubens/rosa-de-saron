@@ -15,6 +15,7 @@ import java.util.Arrays;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        ServicosLoja.addRoupa(ServicosLoja.criarCamisa("A7", "laranja", 'M', 89.90d, false, true, 3));
+        ServicosLoja.addRoupa("rubens");
+        System.out.println("fim");
     }
 }

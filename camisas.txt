@@ -1,3 +1,0 @@
-A7,89.9,LARANJA,M,true,false
-A7,89.9,LARANJA,M,true,false
-A7,89.9,LARANJA,M,true,false
