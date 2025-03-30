@@ -30,7 +30,7 @@ public class ServicosLoja {
     public static ArrayList<Roupa> criarCamisa(String nome, String cor, char tamanho, double valor, boolean gola, boolean manga, int quantidade) {
         ArrayList<Roupa> camisas = new ArrayList<>();
 
-        for(int i=1; i<=quantidade; i++) {
+        for(int i=0; i<quantidade; i++) {
             camisas.add(ServicosLoja.criarCamisa(nome, cor, tamanho, valor, gola, manga));
         }
         return camisas;
@@ -43,20 +43,10 @@ public class ServicosLoja {
     public static ArrayList<Roupa> criarCalca(String nome, String cor, int tamanho, double valor, String peCalca, int quantidade) {
         ArrayList<Roupa> calcas = new ArrayList<>();
 
-        for(int i=1; i<=quantidade; i++) {
-            ServicosLoja.criarCalca(nome, cor, tamanho, valor, peCalca);
+        for(int i=0; i<quantidade; i++) {
+            calcas.add(ServicosLoja.criarCalca(nome, cor, tamanho, valor, peCalca));
         }
         return calcas;
-    }
-
-    public static void addRoupa(String text) throws IOException {
-        Path path = Path.of("abc.txt");
-        if(Files.notExists(path))
-            Files.createFile(path);
-
-        String linha = text + System.lineSeparator();
-        Files.write(path, linha.getBytes(), StandardOpenOption.APPEND);
-        System.out.println(Files.readString(path));
     }
 
     public static void addRoupa(ArrayList<Roupa> roupas) throws IOException{
@@ -191,13 +181,110 @@ public class ServicosLoja {
                 }
             }
         }
-
         if (!original.delete()) {
             System.out.println("Erro ao deletar");
             return null;
         }
         if (!temporario.renameTo(original)) {
             System.out.println("Erro ao renomear atualizar original");
+            return null;
+        }
+
+        return compra;
+    }
+
+    public static ArrayList<Roupa> venderRoupas(Produtos tipo, String nome, int quantidade) throws IOException {
+        ArrayList<Roupa> roupas = new ArrayList<>();
+        File compra = getArquivoCompra(tipo, nome.toUpperCase(), quantidade);
+
+        try(BufferedReader bufferedReader = new BufferedReader(new FileReader(compra))) {
+            String linha;
+            String[] atributos;
+            String nomeObj;
+            double valorObj;
+            String corObj;
+
+            if(tipo.equals(Produtos.CAMISA)) {
+                char tamanhoObj;
+                boolean hasGolaObj;
+                boolean hasMangaObj;
+
+                while((linha = bufferedReader.readLine()) != null) {
+                    atributos = linha.split(",");
+                    nomeObj = atributos[0];
+                    valorObj = Double.parseDouble(atributos[1]);
+                    corObj = atributos[2];
+                    tamanhoObj = atributos[3].charAt(0);
+                    hasMangaObj = Boolean.parseBoolean(atributos[4]);
+                    hasGolaObj = Boolean.parseBoolean(atributos[5]);
+                    roupas.add(criarCamisa(nomeObj, corObj, tamanhoObj, valorObj, hasGolaObj, hasMangaObj));
+                }
+            } else {
+                int tamanhoObj;
+                String peCalcaObj;
+
+                while((linha = bufferedReader.readLine()) != null) {
+                    atributos = linha.split(",");
+                    nomeObj = atributos[0];
+                    valorObj = Double.parseDouble(atributos[1]);
+                    corObj = atributos[2];
+                    tamanhoObj = Integer.parseInt(atributos[3]);
+                    peCalcaObj = atributos[4];
+                    roupas.add(criarCalca(nomeObj, corObj, tamanhoObj, valorObj, peCalcaObj));
+                }
+            }
+        }
+        compra.delete();
+        return roupas;
+    }
+
+    private static File getArquivoCompra(Produtos produto, String nome, int quantidade) throws IOException {
+        String nomeArquivo = (produto.equals(Produtos.CAMISA)) ?"camisas.txt" :"calcas.txt";
+        File original = new File(nomeArquivo);
+        File temp = new File("temp.txt");
+        File compra = new File("compra.txt");
+        Scanner scanner = new Scanner(System.in);
+
+        try(BufferedReader bufferedReader = new BufferedReader(new FileReader(original));
+        BufferedWriter bufferedWriterCompra = new BufferedWriter(new FileWriter(compra));
+        BufferedWriter bufferedWriterTemp = new BufferedWriter(new FileWriter(temp))) {
+            String linha = "";
+            int quant = 0;
+
+            if(produto.equals(Produtos.CAMISA)) {
+                char tamanhoCamisa = scanner.next().charAt(0);
+
+                while ((linha = bufferedReader.readLine()) != null) {
+                    if(linha.contains(nome) && linha.contains(String.valueOf(tamanhoCamisa)) && quant<quantidade) {
+                        bufferedWriterCompra.write(linha);
+                        quant++;
+                    } else {
+                        bufferedWriterTemp.write(linha);
+                    }
+                }
+            } else {
+                int tamanhoCalca = Integer.parseInt(scanner.next());
+
+                while((linha = bufferedReader.readLine()) != null) {
+                    if(linha.contains(nome) && linha.contains(String.valueOf(tamanhoCalca)) && quant<quantidade) {
+                        bufferedWriterCompra.write(linha);
+                        bufferedWriterCompra.newLine();
+                        quant++;
+                    } else {
+                        bufferedWriterTemp.write(linha);
+                        bufferedWriterTemp.newLine();
+                    }
+                }
+            }
+            scanner.close();
+        }
+
+        if(!original.delete()) {
+            System.out.println("Erro ao deletar original");
+            return null;
+        }
+        if(!temp.renameTo(original)) {
+            System.out.println("Erro ao renomar temp para original");
             return null;
         }
 
