@@ -1,1 +1,2 @@
-NIKE,65.0,AMARELO,M,true,trueNIKE,65.0,AMARELO,M,true,trueNIKE,65.0,AMARELO,M,true,true
+NORMAL,35.0,AZUL,M,true,true
+NORMAL,35.0,AZUL,M,true,true
